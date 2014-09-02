@@ -12,11 +12,23 @@ unit tests pass.
 
 import cv2
 
+
 def flip_image(image, horizontal, vertical):
+
     result = image
     if(horizontal):
         result = cv2.flip(result, 1)
-
     if(vertical):
         result = cv2.flip(result, 0)
     return result
+
+
+def negate_image(image):
+
+    return cv2.bitwise_not(image)
+
+
+def swap_blue_and_green(image):
+
+    b, g, r = cv2.split(image)
+    return cv2.merge((g, b, r))
