@@ -9,3 +9,14 @@ unit tests pass.
 """
 
 # TODO: Implement!
+
+import cv2
+
+def flip_image(image, horizontal, vertical):
+    result = image
+    if(horizontal):
+        result = cv2.flip(result, 1)
+
+    if(vertical):
+        result = cv2.flip(result, 0)
+    return result
