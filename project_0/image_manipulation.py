@@ -14,7 +14,8 @@ import cv2
 
 
 def flip_image(image, horizontal, vertical):
-    """Flips the image vertically, horizontally, or both"""
+    """Return an image that has been flipped
+       vertically, horizontally, or both"""
     result = image
     if(horizontal):
         result = cv2.flip(result, 1)
@@ -24,11 +25,12 @@ def flip_image(image, horizontal, vertical):
 
 
 def negate_image(image):
-    """Negates the colors in the image"""
+    """Return an image with every pixel's color negated"""
     return cv2.bitwise_not(image)
 
 
 def swap_blue_and_green(image):
-    """Swaps the B and G color channels in the image"""
+    """Return an image where the B and G
+       color channels have been swapped"""
     b, g, r = cv2.split(image)
     return cv2.merge((g, b, r))
