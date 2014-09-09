@@ -11,11 +11,7 @@ import cv2
 import numpy
 
 
-<<<<<<< HEAD
-def homography(image_a, image_b):
-=======
 def homography(image_a, image_b, bff_match=False):
->>>>>>> 8c482bd3ae5a558220a9955a669e5327995eed62
     """Returns the homography mapping image_b into alignment with image_a.
 
     Arguments:
