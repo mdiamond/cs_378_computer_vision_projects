@@ -59,7 +59,11 @@ class TestPanoStitcher(unittest.TestCase):
         # Warp with a known homography.
         H_expected = self._known_homography(rows, cols)
         houses_left_warped = cv2.warpPerspective(houses_left, H_expected,
+<<<<<<< HEAD
                                                  (cols, rows))
+=======
+                                                 (rows, cols))
+>>>>>>> 8c482bd3ae5a558220a9955a669e5327995eed62
 
         # Compute the homography with the library.
         H_actual = pano_stitcher.homography(houses_left_warped, houses_left)
