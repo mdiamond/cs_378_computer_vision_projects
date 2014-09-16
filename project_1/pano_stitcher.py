@@ -8,7 +8,36 @@ TODO: Implement!
 """
 
 import cv2
-import numpy
+import numpy as np
+
+b1 = cv2.imread('test_data/books_1.png')
+b2 = cv2.imread('test_data/books_2.png')
+
+
+def _match_features(image_a, image_b):
+    sift = cv2.SIFT()
+
+    # We experimented with the FLANN based matcher, but achieved
+    # better results with the bruteforce matcher
+    # using the NORM_L2 distance measurement since we're using
+    # SIFT as the feature detector
+    matcher = cv2.BFMatcher(cv2.NORM_L2)
+
+    # Get key points and descriptors
+    kp_a, des_a = sift.detectAndCompute(image_a, None)
+    kp_b, des_b = sift.detectAndCompute(image_b, None)
+
+    # Filter matches
+    initial_matches = matcher.knnMatch(des_a, des_b, k=2)
+    filtered_matches = [m for m, n
+                        in initial_matches if m.distance < (0.75 * n.distance)]
+
+    # Create source and destination matrices for matches
+    src = np.float32([kp_a[m.queryIdx].pt
+                      for m in filtered_matches]).reshape(-1, 1, 2)
+    dest = np.float32([kp_b[m.trainIdx].pt
+                       for m in filtered_matches]).reshape(-1, 1, 2)
+    return src, dest
 
 
 def homography(image_a, image_b):
@@ -21,7 +50,12 @@ def homography(image_a, image_b):
     Returns: the 3x3 perspective transformation matrix (aka homography)
              mapping points in image_b to corresponding points in image_a.
     """
-    pass
+    # Match features and get the results,
+    # pass them along to findHomography to generate
+    # a tranformation matrix and return it
+    src, dest = _match_features(image_a, image_b)
+    M, _ = cv2.findHomography(dest, src, cv2.RANSAC, 5)
+    return M
 
 
 def warp_image(image, homography):
@@ -42,6 +76,20 @@ def warp_image(image, homography):
         corner in the target space of 'homography', which accounts for any
         offset translation component of the homography.
     """
+    # Get the dot product of the image and homography
+    dp = image.dot(homography)
+    # Warp the image by homography, use
+    # dot product * scale factor for image dimensions
+    dsize = (
+        (int)(dp.shape[1] * homography[0][0]),
+        (int)(dp.shape[0] * homography[1][1])
+    )
+    res = cv2.warpPerspective(image, homography, dsize)
+    cv2.imshow('res', res)
+    cv2.waitKey()
+    # dp is definitely not the correct thing to return here,
+    # see docstring
+    return res, dp
     pass
 
 
