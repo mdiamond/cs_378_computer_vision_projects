@@ -13,12 +13,15 @@ of your own functions to your implementation!
 import cv2
 import pano_stitcher
 import numpy
+import os
+import random
 import unittest
 import random
 import os
 
 
 class TestPanoStitcher(unittest.TestCase):
+
     """Tests the functionality of the pano_stitcher module."""
 
     def setUp(self):
