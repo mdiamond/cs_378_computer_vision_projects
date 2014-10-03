@@ -1,0 +1,5 @@
+We have two ways of using our panorama stitcher:
+
+1. Run the pano_test.py script in the project_1 folder and it will stitch a few particular images together. The images in my_panos/src will be stitched together into my_panos/pano_test.png.
+
+2. Run pano_stitcher_automator.py in the project_1 folder with all the images to be stitched together passed as arguments, followed by the output file name, and it will stitch together any number of images into a panorama in the given output file name.
