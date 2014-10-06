@@ -11,10 +11,6 @@ import cv2
 import numpy as np
 import copy
 
-b1 = cv2.imread('test_data/books_1.png')
-b2 = cv2.imread('test_data/books_2.png')
-b3 = cv2.imread('test_data/books_3.png')
-
 
 def _calculate_matches(image_a, image_b):
     """

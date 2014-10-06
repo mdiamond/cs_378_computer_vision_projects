@@ -19,7 +19,39 @@ def rectify_pair(image_left, image_right, viz=False):
       H_left, H_right: homographies that warp the left and right image so
         their epipolar lines are corresponding rows.
     """
-    pass
+
+    """ FEATURE EXTRACTION """ 
+    kp_left, desc_left = cv2.SIFT().detectAndCompute(image_left, None)
+    kp_right, desc_right = cv2.SIFT().detectAndCompute(image_right, None)
+    FLANN_INDEX_KDTREE = 0
+    TREES = 5
+    CHECKS = 100
+    KNN_ITERS = 2
+    index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=TREES)
+    search_params = dict(checks=CHECKS)
+    flann = cv2.FlannBasedMatcher(index_params, search_params)
+    matches = flann.knnMatch(desc_left, desc_right, k=KNN_ITERS)
+     # store all the good matches as per Lowe's ratio test.
+    good = []
+    for m, n in matches:
+        if m.distance < LOWE_RATIO * n.distance:
+            good.append(m)
+
+    img_left = np.float32(
+        [kp_left[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+    img_right = np.float32(
+        [kp_right[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+
+    """ Computing the fundamental matrix """ 
+    F, mask = cv2.findFundamentalMat(img_left,img_right,cv2.FM_RANSAC)
+    img_left = img_left[mask.ravel()==1]
+    img_right = img_right[mask.ravel()==1]
+
+    """ Rectifying the images """
+     x,y,_ = image_left.shape
+     cv2.stereoRectifyUncalibrated(img_left, img_right, F, [x,y]) # I am not too sure of this.. the x and y points that is 
+
+
 
 
 def disparity_map(image_left, image_right):
