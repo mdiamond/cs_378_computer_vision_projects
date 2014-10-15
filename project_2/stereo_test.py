@@ -1,3 +1,4 @@
+
 """Unit tests for the stereo module.
 
 Implement your stereo module so that all tests pass.
@@ -17,6 +18,7 @@ import unittest
 
 
 class TestStereo(unittest.TestCase):
+
     """Tests the functionality of the stereo module."""
 
     def setUp(self):
@@ -74,10 +76,8 @@ class TestStereo(unittest.TestCase):
         # Load the ground-truth disparity map.
         disparity_expected = cv2.imread('test_data/tsukuba/disparity_left.png',
                                         cv2.CV_LOAD_IMAGE_GRAYSCALE)
-
         # Compute disparity using the function under test.
         disparity = stereo.disparity_map(left, right)
-
         # Compute the difference between the two. Useful to visualize this!
         disparity_diff = cv2.absdiff(disparity, disparity_expected)
 
