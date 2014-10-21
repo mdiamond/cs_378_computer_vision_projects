@@ -1,4 +1,3 @@
-
 """Unit tests for the stereo module.
 
 Implement your stereo module so that all tests pass.
