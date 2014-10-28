@@ -34,5 +34,4 @@ with open(output_filename, 'w') as f:
     f.write(pc)
 
 # Write out the disparity image
-with open('disparity_image.png', 'w') as f:
-    f.write(disparity_image)
+cv2.imwrite('disparity_image.png', disparity_image)

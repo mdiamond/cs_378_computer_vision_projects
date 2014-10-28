@@ -82,6 +82,5 @@ class TestTracking(unittest.TestCase):
         bounds_diff = self._tracking_bounds_diff(self.face_bounds, bounds)
         self.assertLessEqual(bounds_diff, self.max_face_diff)
 
-
 if __name__ == '__main__':
     unittest.main()
