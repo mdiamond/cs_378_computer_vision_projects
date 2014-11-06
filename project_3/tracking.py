@@ -7,6 +7,7 @@ import cv2
 import math
 import numpy
 
+
 def track_ball(video):
     """
     Helper for all track_ball functions
@@ -18,13 +19,13 @@ def track_ball(video):
         retval, image = video.read()
 
         # Did video.read() give us an image?
-        if retval == True:
+        if retval is True:
 
             # Set up the Region of Interest for the object we want to track
             hsv_roi = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
             mask = cv2.inRange(hsv_roi,
-                       numpy.array((0., 60., 32.)),
-                       numpy.array((180., 255., 255.)))
+                               numpy.array((0., 60., 32.)),
+                               numpy.array((180., 255., 255.)))
             roi_hist = cv2.calcHist([hsv_roi], [0], mask, [180], [0, 180])
 
             # Convert from BGR to HSV color-space
@@ -36,16 +37,18 @@ def track_ball(video):
             ret, thresh = cv2.threshold(dst, 127, 255, 0)
 
             # contours is a list of all the contours in the image
-            contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            contours, _ = cv2.findContours(thresh, cv2.RETR_TREE,
+                                           cv2.CHAIN_APPROX_SIMPLE)
 
             # Gets the XYWH of each of the faces detected and appends them
-            x,y,w,h = cv2.boundingRect(contours[0])
+            x, y, w, h = cv2.boundingRect(contours[0])
             result.append((x, y, x + w, y + h))
 
         else:
             break
     cv2.destroyAllWindows()
     return result
+
 
 def track_ball_1(video):
     """Track the ball's center in 'video'.
@@ -75,16 +78,17 @@ def track_ball_3(video):
     while(1):
         ret, frame = video.read()
 
-        if ret == True:
+        if ret is True:
             num_frames = num_frames + 1
             sub = fgbg.apply(frame)
 
-            kernel = numpy.ones((5,5),numpy.uint8)
-            dilation = cv2.dilate(sub,kernel,iterations = 1)
+            kernel = numpy.ones((5, 5), numpy.uint8)
+            dilation = cv2.dilate(sub, kernel, iterations=1)
             ret, thresh = cv2.threshold(dilation, 127, 255, 0)
 
             # contours is a list of all the contours in the image
-            contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            contours, _ = cv2.findContours(thresh, cv2.RETR_TREE,
+                                           cv2.CHAIN_APPROX_SIMPLE)
 
             if (contours):
                 x, y, w, h = cv2.boundingRect(contours[0])
@@ -102,7 +106,7 @@ def track_ball_3(video):
 
     # take first frame of the video
     ret, frame = video.read()
-    
+
     # setup initial location of window
     r, h, c, w = avg_w, avg_h, avg_w, avg_h  # simply hardcoded the values
     track_window = (c, r, w, h)
@@ -118,12 +122,13 @@ def track_ball_3(video):
     roi_hist = cv2.calcHist([hsv_roi], [0], mask, [180], [0, 180])
     cv2.normalize(roi_hist, roi_hist, 0, 255, cv2.NORM_MINMAX)
 
-    # setup the termination criteria, either 10 iteration or move by atleast 1 pt
+    # setup the termination criteria,
+    # either 10 iteration or move by atleast 1 pt
     term_crit = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 1)
     while(1):
         retval, image = video.read()
 
-        if retval == True:
+        if retval is True:
 
             hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
             dst = cv2.calcBackProject([hsv], [0], roi_hist, [0, 180], 1)
@@ -166,7 +171,8 @@ def track_face(video):
                 # Equalizes the histogram to get a better gray image
                 gray = cv2.equalizeHist(gray)
 
-                # Detects faces of different sizes using cv2.CASCADE_SCALE_IMAGE
+                # Detects faces of different sizes using
+                # cv2.CASCADE_SCALE_IMAGE
                 # Minimum neighbors a candidate needs so it can saved is 6
                 # minSize is (70, 70) to prevent artifacts
                 faces = cascade.detectMultiScale(gray,
