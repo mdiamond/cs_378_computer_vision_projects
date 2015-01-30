@@ -1,4 +1,22 @@
-projects-med2425
+CS 378 Computer Vision Projects
 ================
 
-med2425's private project repo
+## Project 0
+
+Preparation for the class
+
+## Project 1
+
+Panorama Stitching
+
+## Project 2
+
+Stereo Vision
+
+## Project 3
+
+Motion Tracking
+
+## Project 4
+
+Custom Project: Depth Camera
